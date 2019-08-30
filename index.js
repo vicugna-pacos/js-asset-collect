@@ -33,21 +33,21 @@ const LAUNCH_OPTION = {
 				// UFJ
 				module_name = './scrape_ufj.js';
 
-			} else if (account.name == 'rakuten') {
-				// 楽天証券
-				module_name = './scrape_rakuten.js';
+			// } else if (account.name == 'rakuten') {
+			// 	// 楽天証券
+			// 	module_name = './scrape_rakuten.js';
 
 //			} else if (account.name == 'sbi_ideco') {
 //				// SBI証券(iDeco)
 //				module_name = './scrape_sbiideco.js';
 
-			} else if (account.name == 'daiwa') {
-				// 大和証券
-				module_name = './scrape_daiwa.js';
+			// } else if (account.name == 'daiwa') {
+			// 	// 大和証券
+			// 	module_name = './scrape_daiwa.js';
 
-			} else if (account.name == 'kakeshin') {
-				// 掛信
-				module_name = './scrape_kakeshin.js';
+			// } else if (account.name == 'kakeshin') {
+			// 	// 掛信
+			// 	module_name = './scrape_kakeshin.js';
 
 			}
 
@@ -79,7 +79,7 @@ const LAUNCH_OPTION = {
 	// 日付を追加
 	let dt = (new Date()).toFormat('YYYY/MM/DD');
 	for (let item of items) {
-		item['日付'] = dt;
+		item['date'] = dt;
 	}
 
 	// 項目を集計してcsvへ出力

@@ -1,36 +1,37 @@
 
-const CATEGORIES = ['現金', '国内株式', '投資信託(国内)', '投資信託(海外)', 'iDeco'];
-
 module.exports.assetAggregation = assetAggregation;
 
 /**
  * 集めた資産の明細をカテゴリごとに集計する。
  *
- * @param items プロパティ：日付、項目、金額
- * @return プロパティ：日付、カテゴリ名
+ * @param details 資産明細
+ * @return 分類別集計
  */
-function assetAggregation(items) {
-	if (items == null || items.length == 0) {
+function assetAggregation(details) {
+	if (details == null || details.length == 0) {
 		return null;
 	}
 
 	let result = {};
 	let total = 0;
 
-	result['日付'] = items[0]['日付'];
+	// 分類ごとに集計
+	for (let detail of details) {
+		if (result[detail.group]) {
+			// 新しい分類
+			result[detail.group] = detail.amount;
 
-	for (let category of CATEGORIES) {
-		let value = 0;
-		for (let item of items) {
-			if (item['項目'].startsWith(`[${category}]`)) {
-				value += item['金額'];
-			}
+		} else {
+			result[detail.group] += detail.amount;
 		}
-		result[category] = value;
-		total += value;
+
+		total += detail.amount;
 	}
 
-	result['合計'] = total;
+	// TODO 全体に対する合計を求める
+
+
+	result["date"] = details[0]["date"];
 
 	return result;
 }
