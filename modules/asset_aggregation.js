@@ -28,7 +28,7 @@ function assetAggregation(details) {
 		total += detail.amount;
 	}
 
-	// TODO 全体に対する合計を求める
+	// TODO 全体に対する割合を求める
 
 
 	result["date"] = details[0]["date"];
