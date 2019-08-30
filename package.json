@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "config": "^1.30.0",
+    "config": "^3.2.2",
     "date-utils": "^1.2.21",
-    "puppeteer": "^1.2.0"
+    "puppeteer": "^1.19.0"
   }
 }
