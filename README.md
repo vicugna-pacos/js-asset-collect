@@ -37,19 +37,15 @@ pattern の表記は [glob](https://github.com/isaacs/node-glob) で処理でき
 {
     "accounts" : [
         {
-            name : "ufj", user_id : "xxxx", password : "pass", branch : "999"
-            , aggregate : [
-                {
-                    group : "現金", pattern : "*"
-                }
+            "name" : "ufj", "user_id" : "xxxx", "password" : "pass", "branch" : "999"
+            , "aggregate" : [
+                {"group" : "現金", "pattern" : "*"}
             ]
         }
         ,{
-            name : "rakuten_stok", user_id : "xxxx", password : "pass"
-            , aggregate : [
-                {
-                    group : "日本株式", pattern : "ソフトバンク*"
-                }
+            "name" : "rakuten_stock", "user_id" : "xxxx", "password" : "pass"
+            , "aggregate" : [
+                {"group" : "日本株式", "pattern" : "ソフトバンク*"}
             ]
         }
     ]
