@@ -1,106 +1,111 @@
 
-const fs = require('fs');
-const readline = require('readline');
+const fs = require("fs");
+const config = require("config");
+const stringify = require("csv-stringify");
 
-const FILENAME_ITEMS = 'output/資産一覧.csv';
-const FILENAME_ASSETS = 'output/資産まとめ.csv';
-const HEADER_ITEMS = ['日付', '項目', '金額'];
-const HEADER_ASSETS = ['日付', '現金', '国内株式', '投資信託(国内)', '投資信託(海外)', 'iDeco', '合計'];
+const FILENAME_DETAILS = "output/資産一覧.csv";
+const FILENAME_TOTAL = "output/資産まとめ.csv";
+const HEADER_DETAILS = ["日付", "分類", "口座", "項目名", "金額"];
+const COLUMNS_DETAILS = ["date", "group", "account", "name", "amount"];
 
 module.exports.writeToCsv = writeToCsv;
 
 /**
  * 資産明細とまとめをCSVファイルに出力する
  *
- * @param items プロパティ：日付、項目、金額
- * @param asset プロパティ：日付、カテゴリごとの金額
+ * @param details 残高明細
+ * @param total 分類別合計
  */
-function writeToCsv(items, asset) {
+function writeToCsv(details, total) {
 
-	if (items.length == 0) {
+	if (details.length == 0) {
 		return;
 	}
 
-	const dt = items[0]['日付'];
+	const dt = details[0]["date"];
 
-	write(FILENAME_ITEMS, HEADER_ITEMS, items, dt);
-	write(FILENAME_ASSETS, HEADER_ASSETS, asset, dt);
+	// ---------- 明細 ----------
+	// 明細から既存データ削除
+	deleteExistsData(FILENAME_DETAILS, dt);
+
+	// 明細を出力用の配列へ変換しつつ、csvファイルへ出力する
+	for (let detail of details) {
+		let output = [];
+		for (let key of COLUMNS_DETAILS) {
+			output.push(detail[key]);
+		}
+
+		// csv出力
+		write(FILENAME_DETAILS, HEADER_DETAILS, output);
+	}
+
+	// ---------- 合計 ----------
+	// 既存データ削除
+	deleteExistsData(FILENAME_TOTAL, dt);
+
+	// 合計を出力用へ変換する
+	let output = [dt];
+	let header_total = ["日付"];
+
+	for (let key of config.groups) {
+		output.push(total[key]);
+		header_total.push(key);
+	}
+
+	output.push(total["total"]);
+	header_total.push("合計");
+
+	for (let key of config.groups) {
+		output.push(total[key + "(%)"]);
+		header_total.push(key + "(%)");
+	}
+	write(FILENAME_TOTAL, header_total, output);
 
 }
 
+
 /**
  * データをファイルへ書き込む
+ * 
+ * @param {string} filename 出力先ファイル名
+ * @param {Array} header ヘッダー行
+ * @param {Array} source 書き込み内容
  */
-function write(filename, header, source, dt) {
+function write(filename, header, source) {
 
-	if (fs.existsSync(filename)) {
-		// 既存ファイルありの場合は、同日付のデータを削除する
-		checkExistsFile(filename, dt);
+	let func = function(err, output) {
+		fs.appendFileSync(filename, output);
+	};
 
-	} else {
+	if (!fs.existsSync(filename)) {
 		// 既存ファイルなしの場合は、ヘッダーを出力する
-		let header_str = '';
-		for (let str of header) {
-			if (header_str != '') {
-				header_str += ',';
-			}
-			header_str += str;
-		}
-		header_str += '\r\n';
-
-		fs.appendFileSync(filename, header_str);
-
+		fs.appendFileSync(filename, header.join(",") + "\r\n");
 	}
 
-	let data = '';
-
-	// データをcsv形式へ変換
-	if (Array.isArray(source)) {
-		// 配列の場合
-		for (let row of source) {
-			for (let i = 0; i < header.length; i++) {
-				if (i > 0) {
-					data += ',';
-				}
-				data += row[header[i]];
-			}
-			data += '\r\n';
-		}
-
-	} else {
-		for (let i = 0; i < header.length; i++) {
-			if (i > 0) {
-				data += ',';
-			}
-			data += source[header[i]];
-		}
-		data += '\r\n';
-
-	}
-
-	// ファイルに書き込む
-	fs.appendFileSync(filename, data);
-
+	fs.appendFileSync(filename, source.join(",") + "\r\n");
 }
 
 
 /**
  * 既存のファイルがある場合、同日付のデータをファイル内から削除する
  */
-function checkExistsFile(filename, dt) {
+function deleteExistsData(filename, dt) {
+	if (!fs.existsSync(filename)) {
+		return;
+	}
 
-	const input_data = fs.readFileSync(filename, {'encoding':'utf8'});
-	const lines = input_data.split('\r\n');
-	let output_data = '';
+	const input_data = fs.readFileSync(filename, {"encoding":"utf8"});
+	const lines = input_data.split("\r\n");
+	let output_data = "";
 
 	for (let line of lines) {
-		if (line == '') {
+		if (line == "") {
 			continue;
 		}
 		if (line.startsWith(dt)) {
 			continue;
 		}
-		output_data += line + '\r\n';
+		output_data += line + "\r\n";
 	}
 
 	fs.writeFileSync(filename, output_data);
