@@ -33,6 +33,7 @@ module.exports.scrape = async (page, account) => {
 		}
 		return {"account" : account.name
 				, "group" : account.aggregate[0].group
+				, "name" : "残高"
 				, "amount" : scrape_utils.parsePrice(value)};
 
 	} catch (err) {
