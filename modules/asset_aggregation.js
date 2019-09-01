@@ -28,10 +28,15 @@ function assetAggregation(details) {
 		total += detail.amount;
 	}
 
-	// TODO 全体に対する割合を求める
-
+	// 全体に対する割合を求める
+	for (let group of result) {
+		let amount = result[group];
+		let percentage = Math.floor(amount / total * 1000) / 10;	// 小数第1位を残して切り捨て
+		result[group + "(割合)"] = percentage;
+	}
 
 	result["date"] = details[0]["date"];
+	result["合計"] = total;
 
 	return result;
 }
