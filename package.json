@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "config": "^3.2.2",
+    "csv": "^5.1.2",
     "date-utils": "^1.2.21",
     "puppeteer": "^1.19.0"
   }
