@@ -32,11 +32,11 @@ function assetAggregation(details) {
 	for (let group of result) {
 		let amount = result[group];
 		let percentage = Math.floor(amount / total * 1000) / 10;	// 小数第1位を残して切り捨て
-		result[group + "(割合)"] = percentage;
+		result[group + "(%)"] = percentage;
 	}
 
 	result["date"] = details[0]["date"];
-	result["合計"] = total;
+	result["total"] = total;
 
 	return result;
 }
