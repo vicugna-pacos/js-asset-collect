@@ -18,18 +18,17 @@ function assetAggregation(details) {
 	// 分類ごとに集計
 	for (let detail of details) {
 		if (result[detail.group]) {
-			// 新しい分類
-			result[detail.group] = detail.amount;
+			result[detail.group] += detail.amount;
 
 		} else {
-			result[detail.group] += detail.amount;
+			result[detail.group] = detail.amount;
 		}
 
 		total += detail.amount;
 	}
 
 	// 全体に対する割合を求める
-	for (let group of result) {
+	for (let group in result) {
 		let amount = result[group];
 		let percentage = Math.floor(amount / total * 1000) / 10;	// 小数第1位を残して切り捨て
 		result[group + "(%)"] = percentage;
