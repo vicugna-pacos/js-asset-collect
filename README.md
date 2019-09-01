@@ -51,5 +51,11 @@ pattern の表記は [glob](https://github.com/isaacs/node-glob) で処理でき
     ]
     // 分類の名前。ここで定義した順番で分類別集計が出力される。
     , "groups" : ["現金", "国内株式", "海外株式", "投資信託(国内)", "投資信託(海外)"]
+
+    // csvファイルの出力先
+    , "destination_detail" : "output/detail.csv"
+    , "destination_total" : "output/total.csv"
 }
 ```
+
+※ 実際のJSONはコメント行を許可しないので注意。

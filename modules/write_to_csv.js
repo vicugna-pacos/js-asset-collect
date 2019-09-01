@@ -1,10 +1,7 @@
 
 const fs = require("fs");
 const config = require("config");
-const stringify = require("csv-stringify");
 
-const FILENAME_DETAILS = "output/資産一覧.csv";
-const FILENAME_TOTAL = "output/資産まとめ.csv";
 const HEADER_DETAILS = ["日付", "分類", "口座", "項目名", "金額"];
 const COLUMNS_DETAILS = ["date", "group", "account", "name", "amount"];
 
@@ -26,7 +23,7 @@ function writeToCsv(details, total) {
 
 	// ---------- 明細 ----------
 	// 明細から既存データ削除
-	deleteExistsData(FILENAME_DETAILS, dt);
+	deleteExistsData(config["destination_detail"], dt);
 
 	// 明細を出力用の配列へ変換しつつ、csvファイルへ出力する
 	for (let detail of details) {
@@ -36,12 +33,12 @@ function writeToCsv(details, total) {
 		}
 
 		// csv出力
-		write(FILENAME_DETAILS, HEADER_DETAILS, output);
+		write(config["destination_detail"], HEADER_DETAILS, output);
 	}
 
 	// ---------- 合計 ----------
 	// 既存データ削除
-	deleteExistsData(FILENAME_TOTAL, dt);
+	deleteExistsData(config["destination_total"], dt);
 
 	// 合計を出力用へ変換する
 	let output = [dt];
@@ -59,7 +56,7 @@ function writeToCsv(details, total) {
 		output.push(total[key + "(%)"]);
 		header_total.push(key + "(%)");
 	}
-	write(FILENAME_TOTAL, header_total, output);
+	write(config["destination_total"], header_total, output);
 
 }
 
