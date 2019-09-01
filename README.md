@@ -35,7 +35,7 @@ pattern の表記は [glob](https://github.com/isaacs/node-glob) で処理でき
 
 ```json
 {
-    accounts : [
+    "accounts" : [
         {
             name : "ufj", user_id : "xxxx", password : "pass", branch : "999"
             , aggregate : [
