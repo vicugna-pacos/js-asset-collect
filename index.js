@@ -4,8 +4,8 @@
 const puppeteer = require('puppeteer');
 const config = require('config');
 const date_utils = require('date-utils');
-const csv = require('./write_to_csv.js');
-const aggr = require('./asset_aggregation.js');
+const csv = require('./modules/write_to_csv.js');
+const aggr = require('./modules/asset_aggregation.js');
 
 const LAUNCH_OPTION = {
 	 headless : false
@@ -31,7 +31,7 @@ const LAUNCH_OPTION = {
 
 			if (account.name == 'ufj') {
 				// UFJ
-				module_name = './scrape_ufj.js';
+				module_name = './modules/scrape_ufj.js';
 
 			// } else if (account.name == 'rakuten') {
 			// 	// 楽天証券
