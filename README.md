@@ -31,7 +31,7 @@
 
 # 設定
 config を使ってjson形式で定義する。
-pattern の表記は [glob](https://github.com/isaacs/node-glob) で処理できる形式にする。
+pattern の表記は正規表現で指定する。
 
 ```json
 {
@@ -39,13 +39,13 @@ pattern の表記は [glob](https://github.com/isaacs/node-glob) で処理でき
         {
             "name" : "ufj", "user_id" : "xxxx", "password" : "pass", "branch" : "999"
             , "aggregate" : [
-                {"group" : "現金", "pattern" : "*"}
+                {"group" : "現金", "pattern" : ".*"}
             ]
         }
         ,{
             "name" : "rakuten_stock", "user_id" : "xxxx", "password" : "pass"
             , "aggregate" : [
-                {"group" : "日本株式", "pattern" : "ソフトバンク*"}
+                {"group" : "日本株式", "pattern" : "ソフトバンク.*"}
             ]
         }
     ]

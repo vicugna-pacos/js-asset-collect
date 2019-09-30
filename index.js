@@ -33,9 +33,9 @@ const LAUNCH_OPTION = {
 				// UFJ
 				module_name = './modules/scrape_ufj.js';
 
-			// } else if (account.name == 'rakuten') {
-			// 	// 楽天証券
-			// 	module_name = './scrape_rakuten.js';
+			} else if (account.name == 'rakuten_stock') {
+				// 楽天証券
+				module_name = './modules/scrape_rakuten.js';
 
 //			} else if (account.name == 'sbi_ideco') {
 //				// SBI証券(iDeco)
@@ -55,19 +55,14 @@ const LAUNCH_OPTION = {
 				continue;
 			}
 
-			let item = await require(module_name).scrape(page, account);
+			let details = await require(module_name).scrape(page, account);
 
-			if (item == null) {
+			if (details == null) {
 				continue;
 			}
 
-			if (Array.isArray(item)) {
-				Array.prototype.push.apply(items, item);
-
-			} else {
-				items.push(item);
-
-			}
+			details = aggr.setGroup(account, details);
+			Array.prototype.push.apply(items, details);
 		}
 
 	} catch(e) {

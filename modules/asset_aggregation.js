@@ -1,4 +1,25 @@
 
+/**
+ * 資産明細のカテゴリを求める
+ */
+module.exports.setGroup = function(account, details) {
+	for (let detail of details) {
+		detail.group = null;
+		for (let aggr of account.aggregate) {
+			let reg = new RegExp(aggr.pattern)
+			if (reg.test(detail.name)) {
+				detail.group = aggr.group;
+				break;
+			}
+		}
+
+		if (detail.group == null) {
+			detail.group = '不明';
+		}
+	}
+	return details;
+};
+
 module.exports.assetAggregation = assetAggregation;
 
 /**

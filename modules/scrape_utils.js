@@ -47,3 +47,4 @@ module.exports.clickLink = async (page, selector) => {
 
 	}
 };
+

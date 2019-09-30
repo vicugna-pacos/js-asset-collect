@@ -31,10 +31,10 @@ module.exports.scrape = async (page, account) => {
 			console.log("UFJ残高取得失敗");
 			value = 0;
 		}
-		return {"account" : account.name
+		return [{"account" : account.name
 				, "group" : account.aggregate[0].group
 				, "name" : "残高"
-				, "amount" : scrape_utils.parsePrice(value)};
+				, "amount" : scrape_utils.parsePrice(value)}];
 
 	} catch (err) {
 		console.log("UFJ残高取得失敗");
