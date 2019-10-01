@@ -45,9 +45,9 @@ const LAUNCH_OPTION = {
 				// 大和証券
 				module_name = './modules/scrape_daiwa.js';
 
-			// } else if (account.name == 'kakeshin') {
-			// 	// 掛信
-			// 	module_name = './scrape_kakeshin.js';
+			} else if (account.name == '掛信') {
+				// 掛信
+				module_name = './modules/scrape_kakeshin.js';
 
 			}
 
