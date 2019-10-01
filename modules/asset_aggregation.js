@@ -1,3 +1,4 @@
+const config = require('config');
 
 /**
  * 資産明細のカテゴリを求める
@@ -34,6 +35,12 @@ function assetAggregation(details) {
 	}
 
 	let result = {};
+
+	// 定義した分類で初期化
+	for (let group of config.groups) {
+		result[group] = 0;
+	}
+
 	let total = 0;
 
 	// 分類ごとに集計

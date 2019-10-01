@@ -29,11 +29,11 @@ const LAUNCH_OPTION = {
 		for (let account of config.accounts) {
 			let module_name = null;
 
-			if (account.name == 'ufj') {
+			if (account.name == 'UFJ') {
 				// UFJ
 				module_name = './modules/scrape_ufj.js';
 
-			} else if (account.name == 'rakuten_stock') {
+			} else if (account.name == '楽天証券') {
 				// 楽天証券
 				module_name = './modules/scrape_rakuten.js';
 
@@ -41,9 +41,9 @@ const LAUNCH_OPTION = {
 //				// SBI証券(iDeco)
 //				module_name = './scrape_sbiideco.js';
 
-			// } else if (account.name == 'daiwa') {
-			// 	// 大和証券
-			// 	module_name = './scrape_daiwa.js';
+			} else if (account.name == '大和証券') {
+				// 大和証券
+				module_name = './modules/scrape_daiwa.js';
 
 			// } else if (account.name == 'kakeshin') {
 			// 	// 掛信

@@ -27,8 +27,10 @@ module.exports.scrape = async (page, account) => {
 
 		for (let raw_item of raw_items) {
 			result.push({
-				 '項目' : raw_item['項目']
-				,'金額' : scrape_utils.parsePrice(raw_item['金額'])
+				'account' : account.name
+				, 'group' : null
+				, 'name' : raw_item.name
+				, 'amount' : scrape_utils.parsePrice(raw_item.amount)
 			});
 		}
 
@@ -52,8 +54,8 @@ function getCash() {
 	let container_cash = document.querySelector(selector_cash);
 
 	let result = [
-		 {'項目' : '[現金][大和証券]MRF', '金額' : container_mrf.innerText}
-		,{'項目' : '[現金][大和証券]現金', '金額' : container_cash.innerText}
+		 {'name' : 'MRF', 'amount' : container_mrf.innerText}
+		,{'name' : '現金', 'amount' : container_cash.innerText}
 	];
 
 	return result;
