@@ -74,7 +74,10 @@ module.exports.scrape = async (page, account) => {
 			console.log("掛信残高取得失敗");
 			value = 0;
 		}
-		return [{"name" : "残高" , "amount" : scrape_utils.parsePrice(value)}];
+		return [{"account" : account.name
+		, "name" : "残高" 
+		, "group" : account.aggregate[0].group
+		, "amount" : scrape_utils.parsePrice(value)}];
 
 	} catch (err) {
 		console.log("掛信残高取得失敗");
