@@ -35,10 +35,11 @@ module.exports.scrape = async (page, account) => {
 		]);
 
 		// 残高取得
-		let selector = "#remainder_info > div > div > div > div.info_table_gray.section > table > tbody > tr > td.balance_info > p > strong";
-		await page.waitForSelector(selector);
+		let selector = "#remainder_info table.yen_kouza_001 td.number > strong";
+		await page.waitForSelector(selector, {"visible":true});
+		const zandaka_ele = await page.$(selector);
 
-		let value = await page.evaluate(getCash, selector);
+		let value = await page.evaluate((ele) => {return ele.textContent}, zandaka_ele);
 
 		if (value == null) {
 			console.log("UFJ残高取得失敗");
@@ -55,15 +56,3 @@ module.exports.scrape = async (page, account) => {
 		return null;
 	}
 };
-
-/**
- * evaluate用関数：UFJの口座一覧から値を取得する
- */
-function getCash(selector) {
-	let container = document.querySelector(selector);
-	if (container == null) {
-		return null;
-	}
-
-	return container.innerText;
-}
