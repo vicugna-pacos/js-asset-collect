@@ -29,7 +29,7 @@ module.exports.scrape = async (page, account) => {
 			return null;
 		}
 
-		const [response] = await Promise.all([
+		await Promise.all([
 			page.waitForNavigation({"waitUntil":"domcontentloaded"}),
 			kouzalinks[0].click()
 		]);
