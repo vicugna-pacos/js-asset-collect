@@ -1,25 +1,24 @@
 /**
- * UFJの資産取得
+ * UFJの残高取得
  */
-
 const scrape_utils = require("./scrape_utils.js");
-
-const navOption = {"waitUntil":"domcontentloaded"};
 
 module.exports.scrape = async (page, account) => {
 	try {
-		await page.goto("https://entry11.bk.mufg.jp/ibg/dfw/APLIN/loginib/login?_TRANID=AA000_001", navOption);
+		await page.goto("https://entry11.bk.mufg.jp/ibg/dfw/APLIN/loginib/login?_TRANID=AA000_001", {"waitUntil":"domcontentloaded"});
 
 		// ログイン
 		await page.waitForSelector("#account_id", {"visible":true});
 		await page.type("#account_id", account.user_id);
 		await page.type("#ib_password", account.password);
 
-		await scrape_utils.clickLink(page, "div.admb_m a");
-		await page.waitForNavigation(navOption);
+		await Promise.all([
+			page.waitForNavigation({"waitUntil":"domcontentloaded"}),
+			page.click("div.admb_m a")
+		]);
 
 		// 「ほかの口座残高をみる」をクリック
-		await scrape_utils.clickLink(page, "section.see-others > div.open-text");
+		await page.click("section.see-others > div.open-text");
 		await page.waitFor(1000);
 		
 		// 口座一覧のページへ移動
