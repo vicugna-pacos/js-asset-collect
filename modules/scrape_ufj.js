@@ -11,6 +11,7 @@ module.exports.scrape = async (page, account) => {
 		await page.goto("https://entry11.bk.mufg.jp/ibg/dfw/APLIN/loginib/login?_TRANID=AA000_001", navOption);
 
 		// ログイン
+		await page.waitForSelector("#account_id", {"visible":true});
 		await page.type("#account_id", account.user_id);
 		await page.type("#ib_password", account.password);
 
@@ -19,11 +20,19 @@ module.exports.scrape = async (page, account) => {
 
 		// 「ほかの口座残高をみる」をクリック
 		await scrape_utils.clickLink(page, "section.see-others > div.open-text");
-		await page.waitFor(500);
+		await page.waitFor(1000);
 		
 		// 口座一覧のページへ移動
-		await scrape_utils.clickLink(page, "body > div > main > form > section > div > div.col-7 > div > div.card-body > div > ul > li:nth-child(1) > a");
-		await page.waitForNavigation(navOption);
+		let kouzalinks = await page.$x("//div[@class='show-more']//a[contains(text(), '口座一覧')]");
+		if (kouzalinks == null || kouzalinks.length == 0) {
+			console.log("口座一覧のリンクなし");
+			return null;
+		}
+
+		const [response] = await Promise.all([
+			page.waitForNavigation({"waitUntil":"domcontentloaded"}),
+			kouzalinks[0].click()
+		]);
 
 		// 残高取得
 		let selector = "#remainder_info > div > div > div > div.info_table_gray.section > table > tbody > tr > td.balance_info > p > strong";
