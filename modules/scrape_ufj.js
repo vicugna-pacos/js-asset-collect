@@ -8,13 +8,13 @@ module.exports.scrape = async (page, account) => {
 		await page.goto("https://entry11.bk.mufg.jp/ibg/dfw/APLIN/loginib/login?_TRANID=AA000_001", {"waitUntil":"domcontentloaded"});
 
 		// ログイン
-		await page.waitForSelector("#account_id", {"visible":true});
-		await page.type("#account_id", account.user_id);
-		await page.type("#ib_password", account.password);
+		await page.waitForSelector("#tx-contract-number", {"visible":true});
+		await page.type("#tx-contract-number", account.user_id);
+		await page.type("#tx-ib-password", account.password);
 
 		await Promise.all([
 			page.waitForNavigation({"waitUntil":"domcontentloaded"}),
-			page.click("div.admb_m a")
+			page.click("button.gonext")
 		]);
 
 		// 「ほかの口座残高をみる」をクリック
