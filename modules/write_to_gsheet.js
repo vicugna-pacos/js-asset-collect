@@ -1,5 +1,6 @@
 const {google} = require("googleapis");
 const config = require("config");
+require("date-utils");
 
 let oAuth2Client = null;    // API実行に必要な認証情報
 
@@ -34,15 +35,29 @@ module.exports.mergeDetails = async function(details) {
     if (details.length == 0) {
         return;
     }
+
+    // 明細データの整形
+    const detailsFormatted = [];
+    for (let i=0; i<details.length; i++) {
+        detailsFormatted.push([
+            details[i]["date"].toFormat("YYYY/MM/DD")
+            , details[i]["group"]
+            , details[i]["account"]
+            , details[i]["name"]
+            , details[i]["amount"]
+        ]);
+    }
     
     // 既存データ取得
     const exists = await getSheetData(config.spreadsheets.range);
 
     // 日付が一致するものを入れ替え
-    const dt = details[0]["date"];
+    const dt = detailsFormatted[0][0];
 
     for (let i=exists.length-1; i>=0; i--) {
-        exists.splice(i, 1);
+        if (exists[0] == dt) {
+            exists.splice(i, 1);
+        }
     }
 
     for (let i=0; i<details.length; i++) {
