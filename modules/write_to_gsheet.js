@@ -60,14 +60,12 @@ module.exports.mergeDetails = async function(details) {
     const dt = detailsFormatted[0][0];
 
     for (let i=exists.length-1; i>=0; i--) {
-        if (exists[0] == dt) {
+        if (exists[i][0] == dt) {
             exists.splice(i, 1);
         }
     }
 
-    for (let i=0; i<details.length; i++) {
-        exists.push(details[i]);
-    }
+    Array.prototype.push.apply(exists, detailsFormatted);
 
     // スプレッドシートへ書き込み
     await writeData(config.spreadsheets.range, exists);
