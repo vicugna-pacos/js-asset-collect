@@ -6,6 +6,7 @@ const config = require('config');
 const date_utils = require('date-utils');
 const csv = require('./modules/write_to_csv.js');
 const aggr = require('./modules/asset_aggregation.js');
+const sheets = require('./modules/write_to_gsheet.js');
 
 const LAUNCH_OPTION = {
 	 headless : false
@@ -20,6 +21,8 @@ const LAUNCH_OPTION = {
 	// キャッチされなかったPromiseのエラー詳細を出してくれる
 	process.on('unhandledRejection', console.dir);
 
+	await sheets.init();
+
 	const browser = await puppeteer.launch(LAUNCH_OPTION);
 	let items = [];
 	try {
@@ -33,21 +36,21 @@ const LAUNCH_OPTION = {
 				// UFJ
 				module_name = './modules/scrape_ufj.js';
 
-			} else if (account.name == '楽天証券') {
-				// 楽天証券
-				module_name = './modules/scrape_rakuten.js';
+			// } else if (account.name == '楽天証券') {
+			// 	// 楽天証券
+			// 	module_name = './modules/scrape_rakuten.js';
 
 //			} else if (account.name == 'sbi_ideco') {
 //				// SBI証券(iDeco)
 //				module_name = './scrape_sbiideco.js';
 
-			} else if (account.name == '大和証券') {
-				// 大和証券
-				module_name = './modules/scrape_daiwa.js';
+			// } else if (account.name == '大和証券') {
+			// 	// 大和証券
+			// 	module_name = './modules/scrape_daiwa.js';
 
-			} else if (account.name == '掛信') {
-				// 掛信
-				module_name = './modules/scrape_kakeshin.js';
+			// } else if (account.name == '掛信') {
+			// 	// 掛信
+			// 	module_name = './modules/scrape_kakeshin.js';
 
 			}
 
@@ -80,7 +83,8 @@ const LAUNCH_OPTION = {
 	// 項目を集計してcsvへ出力
 	const asset = aggr.assetAggregation(items);
 
-	csv.writeToCsv(items, asset);
+	//csv.writeToCsv(items, asset);
+	sheets.mergeDetails(items);
 
 	console.log('処理が完了しました');
 })();

@@ -1,6 +1,11 @@
 const {google} = require("googleapis");
 const config = require("config");
-require("date-utils");
+const readline = require("readline");
+const fs = require("fs");
+
+const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];    // 読み書き可
+const CREDENTIALS_PATH = "credentials.json";    // アプリ側の認証情報
+const TOKEN_PATH = "token.json";    // トークン保存場所
 
 let oAuth2Client = null;    // API実行に必要な認証情報
 
@@ -40,7 +45,7 @@ module.exports.mergeDetails = async function(details) {
     const detailsFormatted = [];
     for (let i=0; i<details.length; i++) {
         detailsFormatted.push([
-            details[i]["date"].toFormat("YYYY/MM/DD")
+            details[i]["date"]
             , details[i]["group"]
             , details[i]["account"]
             , details[i]["name"]
