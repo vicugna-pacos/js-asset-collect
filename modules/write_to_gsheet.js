@@ -58,14 +58,22 @@ module.exports.mergeDetails = async function(details) {
 
     // 日付が一致するものを入れ替え
     const dt = detailsFormatted[0][0];
-
+    let deletedCount = 0;
     for (let i=exists.length-1; i>=0; i--) {
         if (exists[i][0] == dt) {
             exists.splice(i, 1);
+            deletedCount++;
         }
     }
 
     Array.prototype.push.apply(exists, detailsFormatted);
+
+    if (deletedCount > detailsFormatted.length) {
+        // 削除件数が追加された行数より多い場合は、末尾に空白を加える。
+        for (let i=(deletedCount-detailsFormatted.length); i>0; i--) {
+            exists.push(["","","","",""]);
+        }
+    }
 
     // スプレッドシートへ書き込み
     await writeData(config.spreadsheets.range, exists);
