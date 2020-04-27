@@ -2,32 +2,37 @@
  * 楽天証券の資産取得
  */
 
-const puppeteer = require('puppeteer');
-const scrape_utils = require('./scrape_utils.js');
+const puppeteer = require("puppeteer");
+const scrape_utils = require("./scrape_utils.js");
 
-const navOption = {'waitUntil':'domcontentloaded'};
+const navOption = {"waitUntil":"domcontentloaded"};
 
 module.exports.scrape = async (page, account) => {
-	process.on('unhandledRejection', console.dir);
+	process.on("unhandledRejection", console.dir);
 	try {
-		await page.goto('https://www.rakuten-sec.co.jp/', navOption);
+		await page.goto("https://www.rakuten-sec.co.jp/", navOption);
 		await page.waitFor(1000);
 
 		// ログイン
-		await page.type('#form-login-id', account.user_id);
-		await page.type('#form-login-pass', account.password);
-		await scrape_utils.clickLink(page, '.s1-form-login__btn');
-		await page.waitForNavigation(navOption);
+		await page.type("#form-login-id", account.user_id);
+		await page.type("#form-login-pass", account.password);
+		
+		await Promise.all([
+			page.waitForNavigation({"waitUntil":"domcontentloaded"}),
+			page.click(".s3-form-login__btn")
+		]);
+
 		await page.waitFor(1000);
 
 		// 保有資産一覧へ移動
-		await scrape_utils.clickLink(page, '#member-top-btn-stk-possess');	// 資産合計のところにある「保有資産一覧」のリンク
-		await page.waitForNavigation(navOption);
-		await page.waitFor(1000);
+		await Promise.all([
+			page.waitForNavigation({"waitUntil":"domcontentloaded"}),
+			page.click("#member-top-btn-stk-possess")	// 資産合計のところにある「保有資産一覧」のリンク
+		]);
 
 		// 保有資産一覧のテーブル
-		let selector_possess = '#table_possess_data > span > table';
-		let selector_balance = '#table_balance_data > div > table > tbody > tr:nth-child(13) > td.T2.R1.fb';
+		let selector_possess = "#table_possess_data > span > table";
+		let selector_balance = "#table_balance_data > div > table > tbody > tr:nth-child(13) > td.T2.R1.fb";
 
 		await page.waitForSelector(selector_possess);
 		await page.waitForSelector(selector_balance);
@@ -41,17 +46,17 @@ module.exports.scrape = async (page, account) => {
 		let result = [];
 		for (let raw_item of raw_items) {
 			result.push({
-				'account' : account.name
-				, 'group' : null
-				, 'name' : raw_item.name
-				, 'amount' : scrape_utils.parsePrice(raw_item.amount)});
+				"account" : account.name
+				, "group" : null
+				, "name" : raw_item.name
+				, "amount" : scrape_utils.parsePrice(raw_item.amount)});
 
 		}
 
 		return result;
 
 	} catch (err) {
-		console.log('楽天証券 情報取得失敗');
+		console.log("楽天証券 情報取得失敗");
 		console.log(err);
 		return null;
 	}
@@ -74,18 +79,18 @@ function rakuten_getvalue(selector_possess, selector_balance) {
 		let value = 0;
 
 		// 国内株式と投資信託でテーブルのレイアウトが違う
-		if (group == '国内株式') {
+		if (group == "国内株式") {
 			name = row.cells[2].innerText.trim();
 			value_cell = row.cells[7];
 
-		} else if (group == '投資信託') {
+		} else if (group == "投資信託") {
 			name = row.cells[1].innerText.trim();
 			value_cell = row.cells[6];
 
 		}
 
 		// 現在の評価額を取得
-		let value_containers = value_cell.getElementsByClassName('MktValYen');
+		let value_containers = value_cell.getElementsByClassName("MktValYen");
 
 		if (value_containers.length > 0) {
 			value = value_containers[0].innerText;
@@ -93,8 +98,8 @@ function rakuten_getvalue(selector_possess, selector_balance) {
 
 		if (name != null) {
 			result.push({
-				'name' : name
-				, 'amount' : value});
+				"name" : name
+				, "amount" : value});
 		}
 
 	}
@@ -102,12 +107,12 @@ function rakuten_getvalue(selector_possess, selector_balance) {
 	// 預かり金
 	let container_balance = document.querySelector(selector_balance);
 	if (container_balance == null) {
-		console.log('[楽天証券][現金]預かり金 取得失敗');
+		console.log("[楽天証券][現金]預かり金 取得失敗");
 
 	} else {
 		result.push({
-				'name' : '預かり金'
-				, 'amount' : container_balance.innerText});
+				"name" : "預かり金"
+				, "amount" : container_balance.innerText});
 
 	}
 
