@@ -1,4 +1,4 @@
-const config = require('config');
+const config = require("config");
 
 /**
  * 資産明細のカテゴリを求める
@@ -15,7 +15,7 @@ module.exports.setGroup = function(account, details) {
 		}
 
 		if (detail.group == null) {
-			detail.group = '不明';
+			detail.group = "不明";
 		}
 	}
 	return details;
