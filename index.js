@@ -4,9 +4,8 @@
 const puppeteer = require('puppeteer');
 const config = require('config');
 const date_utils = require('date-utils');
-const csv = require('./modules/write_to_csv.js');
 const aggr = require('./modules/asset_aggregation.js');
-const sheets = require('./modules/write_to_gsheet.js');
+const writer = require('./modules/write_to_gsheet.js');
 
 const LAUNCH_OPTION = {
 	 headless : false
@@ -20,8 +19,6 @@ const LAUNCH_OPTION = {
 
 	// キャッチされなかったPromiseのエラー詳細を出してくれる
 	process.on('unhandledRejection', console.dir);
-
-	await sheets.init();
 
 	const browser = await puppeteer.launch(LAUNCH_OPTION);
 	let items = [];
@@ -64,7 +61,7 @@ const LAUNCH_OPTION = {
 				continue;
 			}
 
-			details = aggr.setGroup(account, details);
+			details = await aggr.setGroup(details);
 			Array.prototype.push.apply(items, details);
 		}
 
@@ -80,11 +77,8 @@ const LAUNCH_OPTION = {
 		item['date'] = dt;
 	}
 
-	// 項目を集計してcsvへ出力
-	const asset = aggr.assetAggregation(items);
-
-	//csv.writeToCsv(items, asset);
-	sheets.mergeDetails(items);
+	// スプレッドシートへ書き込み
+	writer.mergeDetails(items);
 
 	console.log('処理が完了しました');
 })();

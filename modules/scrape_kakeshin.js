@@ -77,7 +77,7 @@ module.exports.scrape = async (page, account) => {
 		return [{"account" : account.name
 		, "owner" : account.owner
 		, "name" : "残高" 
-		, "group" : account.aggregate[0].group
+		, "group" : "現金"
 		, "amount" : scrape_utils.parsePrice(value)}];
 
 	} catch (err) {
