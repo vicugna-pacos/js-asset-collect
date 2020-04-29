@@ -27,6 +27,10 @@
 |分類|国内株式、投資信託など、個別の資産の分類。|
 |パターン|個別の資産名。正規表現が使える。|
 
+![](./docs/image01.PNG)
+
+シート名や範囲の設定値は`config.spreadsheets.patterns_range`に定義する。
+
 # 設定
 config を使ってjson形式で定義する。
 pattern の表記は正規表現で指定する。
@@ -36,37 +40,25 @@ pattern の表記は正規表現で指定する。
     "spreadsheets" :{
         "sheetId" : "xxxxx"
         , "range" : "明細"
+        , "patterns_range" : "分類!A:B"
     }
     , "accounts" : [
         {
             "name" : "ufj", "user_id" : "xxxx", "password" : "pass", "branch" : "999"
             , "owner" : "Aさん"
-            , "aggregate" : [
-                {"group" : "現金", "pattern" : ".*"}
-            ]
         }
         ,{
             "name" : "rakuten_stock", "user_id" : "xxxx", "password" : "pass"
             , "owner" : "Bさん"
-            , "aggregate" : [
-                {"group" : "日本株式", "pattern" : "ソフトバンク.*"}
-            ]
         }
     ]
-    // 分類の名前。ここで定義した順番で分類別集計が出力される。
-    , "groups" : ["現金", "日本株式", "海外株式", "投資信託(国内)", "投資信託(海外)", "不明"]
-
-    // csvファイルの出力先
-    , "destination_detail" : "output/detail.csv"
-    , "destination_total" : "output/total.csv"
 }
 ```
 
 ※ 実際のJSONはコメント行を許可しないので注意。
 
-# 変更点
 
-* 明細データに所有者を追加。
- * 列は以下の通り：日付(date)、所有者(owner)、分類(group)、口座(account)、項目名(name)、金額(amount)
- * 所有者は設定ファイルで定義する。
-* 名寄せパターンはスプレッドシートに載せて、スクリプトで取得して使う。
+# 変更点
+# スクリプト内の明細データ
+
+列は以下の通り：日付(date)、所有者(owner)、分類(group)、口座(account)、項目名(name)、金額(amount)
