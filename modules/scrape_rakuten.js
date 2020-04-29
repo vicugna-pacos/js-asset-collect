@@ -47,6 +47,7 @@ module.exports.scrape = async (page, account) => {
 		for (let raw_item of raw_items) {
 			result.push({
 				"account" : account.name
+				, "owner" : account.owner
 				, "group" : null
 				, "name" : raw_item.name
 				, "amount" : scrape_utils.parsePrice(raw_item.amount)});
