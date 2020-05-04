@@ -2,7 +2,6 @@
  * 大和証券の資産取得
  */
 
-const puppeteer = require('puppeteer');
 const scrape_utils = require('./scrape_utils.js');
 
 const navOption = {'waitUntil':'domcontentloaded'};

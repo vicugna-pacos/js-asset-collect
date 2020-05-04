@@ -2,7 +2,6 @@
  * 掛川信用金庫 WEBバンキングで残高取得
  */
 
-const puppeteer = require("puppeteer");
 const scrape_utils = require("./scrape_utils.js");
 
 const navOption = {"waitUntil":"load"};
