@@ -30,24 +30,19 @@ const LAUNCH_OPTION = {
 			let module_name = null;
 
 			if (account.name == 'UFJ') {
-				// UFJ
 				module_name = './modules/scrape_ufj.js';
 
 			} else if (account.name == '楽天証券') {
-				// 楽天証券
 				module_name = './modules/scrape_rakuten.js';
 
-//			} else if (account.name == 'sbi_ideco') {
-//				// SBI証券(iDeco)
-//				module_name = './scrape_sbiideco.js';
-
 			} else if (account.name == '大和証券') {
-				// 大和証券
 				module_name = './modules/scrape_daiwa.js';
 
 			} else if (account.name == '掛信') {
-				// 掛信
 				module_name = './modules/scrape_kakeshin.js';
+
+			} else if (account.name == 'イオン銀行') {
+				module_name = './modules/scrape_aeon.js';
 
 			}
 
