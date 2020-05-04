@@ -12,6 +12,6 @@
     "config": "^3.2.2",
     "date-utils": "^1.2.21",
     "googleapis": "^47.0.0",
-    "puppeteer": "^1.19.0"
+    "puppeteer-core": "^3.0.2"
   }
 }

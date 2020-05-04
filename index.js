@@ -1,7 +1,7 @@
 /*
 資産情報取得モジュール
  */
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
 const config = require("config");
 const date_utils = require("date-utils");
 const aggr = require("./modules/asset_aggregation.js");
