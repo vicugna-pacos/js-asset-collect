@@ -4,8 +4,8 @@
 const puppeteer = require("puppeteer-core");
 const config = require("config");
 const date_utils = require("date-utils");
-const aggr = require("./modules/asset_aggregation.js");
-const writer = require("./modules/write_to_gsheet.js");
+const aggr = require("./src/asset_aggregation.js");
+const writer = require("./src/write_to_gsheet.js");
 
 const LAUNCH_OPTION = {
 	 headless : false
@@ -30,19 +30,19 @@ const LAUNCH_OPTION = {
 			let module_name = null;
 
 			if (account.name == "UFJ") {
-				module_name = "./modules/scrape_ufj.js";
+				module_name = "./src/scrape_ufj.js";
 
 			} else if (account.name == "楽天証券") {
-				module_name = "./modules/scrape_rakuten.js";
+				module_name = "./src/scrape_rakuten.js";
 
 			} else if (account.name == "大和証券") {
-				module_name = "./modules/scrape_daiwa.js";
+				module_name = "./src/scrape_daiwa.js";
 
 			} else if (account.name == "掛信") {
-				module_name = "./modules/scrape_kakeshin.js";
+				module_name = "./src/scrape_kakeshin.js";
 
 			} else if (account.name == "イオン銀行") {
-				module_name = "./modules/scrape_aeon.js";
+				module_name = "./src/scrape_aeon.js";
 
 			}
 
