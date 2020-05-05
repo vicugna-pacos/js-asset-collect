@@ -3,9 +3,9 @@
  */
 const puppeteer = require("puppeteer-core");
 const config = require("config");
-const date_utils = require("date-utils");
 const aggr = require("./src/asset_aggregation.js");
 const writer = require("./src/write_to_gsheet.js");
+require("date-utils");
 
 const LAUNCH_OPTION = {
 	 headless : false
@@ -17,40 +17,32 @@ const LAUNCH_OPTION = {
  */
 (async () => {
 
+	// スクレイパー定義
+	const scrapers = new Map();
+	scrapers.set("UFJ", "scrape_ufj");
+	scrapers.set("イオン銀行", "scrape_aeon");
+	scrapers.set("大和証券", "scrape_daiwa");
+	scrapers.set("掛信", "scrape_kakeshin");
+	scrapers.set("楽天証券", "scrape_rakuten");
+	
 	// キャッチされなかったPromiseのエラー詳細を出してくれる
-	process.on("unhandledRejection", console.dir);
+	//process.on("unhandledRejection", console.dir);
 
 	const browser = await puppeteer.launch(LAUNCH_OPTION);
 	let items = [];
 	try {
 		const page = await browser.newPage();
-		page.on("console", console.log);	// page.evaluateで実行した関数のログも出力される
+		//page.on("console", console.log);	// page.evaluateで実行した関数のログも出力される
 
 		for (let account of config.accounts) {
-			let module_name = null;
 
-			if (account.name == "UFJ") {
-				module_name = "./src/scrape_ufj.js";
-
-			} else if (account.name == "楽天証券") {
-				module_name = "./src/scrape_rakuten.js";
-
-			} else if (account.name == "大和証券") {
-				module_name = "./src/scrape_daiwa.js";
-
-			} else if (account.name == "掛信") {
-				module_name = "./src/scrape_kakeshin.js";
-
-			} else if (account.name == "イオン銀行") {
-				module_name = "./src/scrape_aeon.js";
-
-			}
-
-			if (module_name == null) {
+			const filename = scrapers.get(account.name);
+			if (filename == null) {
 				continue;
 			}
 
-			let details = await require(module_name).scrape(page, account);
+			const scraper = require("./src/" + filename + ".js");
+			let details = await scraper.scrape(page, account);
 
 			if (details == null) {
 				continue;
