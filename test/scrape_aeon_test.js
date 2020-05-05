@@ -1,7 +1,7 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
 const config = require("config");
 const date_utils = require("date-utils");
-const aeon = require("../modules/scrape_aeon.js");
+const aeon = require("../src/scrape_aeon.js");
 
 const LAUNCH_OPTION = {
 	 headless : false
