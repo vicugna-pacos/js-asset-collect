@@ -15,7 +15,7 @@ Node.js
 ## 設定ファイル
 `config/default.json`を作成する。
 
-```json:default.jsonひな型
+```json
 {
     "spreadsheets" :{
         "sheetId" : ""
@@ -91,7 +91,7 @@ Node.js
 # 対応金融機関を増やす
 新しいjsファイルを作成し、以下の関数を作成する。
 
-```javascript:scrape関数ひな型
+```javascript
 module.exports.scrape = async (page, account) => {
 	try {
         // スクレイピング
