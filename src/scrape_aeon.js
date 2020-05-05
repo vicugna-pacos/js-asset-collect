@@ -118,4 +118,5 @@ async function secretQuestion(page, account) {
 		page.waitForNavigation({"waitUntil":"domcontentloaded"}),
 		page.click("#butn01")
 	]);
+	await page.waitFor(1000);
 }
