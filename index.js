@@ -24,6 +24,7 @@ const LAUNCH_OPTION = {
 	scrapers.set("大和証券", "scrape_daiwa");
 	scrapers.set("掛信", "scrape_kakeshin");
 	scrapers.set("楽天証券", "scrape_rakuten");
+	scrapers.set("みずほ", "scrape_mizuho");
 	
 	// キャッチされなかったPromiseのエラー詳細を出してくれる
 	//process.on("unhandledRejection", console.dir);
@@ -32,6 +33,8 @@ const LAUNCH_OPTION = {
 	let items = [];
 	try {
 		const page = await browser.newPage();
+		await page.setViewport({"width":1010, "height":816});
+
 		//page.on("console", console.log);	// page.evaluateで実行した関数のログも出力される
 
 		for (let account of config.accounts) {
