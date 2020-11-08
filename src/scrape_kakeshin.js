@@ -11,7 +11,7 @@ module.exports.scrape = async (page, account) => {
 	try {
 		await page.goto("https://www11.ib.shinkin-ib.jp/webbk/login/b-prelogin.do?bankcode=MTUxMw==", navOption);
 		// 上記URLからリダイレクトが発生するので、数秒待つ。
-		await page.waitFor(5000);
+		await page.waitForTimeout(5000);
 
 		// ラポートのインストールを促すダイアログを消す
 		await page.evaluate(() => {
@@ -29,7 +29,7 @@ module.exports.scrape = async (page, account) => {
 			document.querySelector("input[type=submit][value=ログイン]").click();
 		}, account);
 
-		await page.waitFor(3000);
+		await page.waitForTimeout(3000);
 
 		// 残高を表示ボタンを押す
 		await page.evaluate(() => {
@@ -37,7 +37,7 @@ module.exports.scrape = async (page, account) => {
 			button.click();
 		});
 
-		await page.waitFor(3000);
+		await page.waitForTimeout(3000);
 
 		// 残高取得
 		let value = await page.evaluate(() => {
@@ -67,7 +67,7 @@ module.exports.scrape = async (page, account) => {
 
 			target.click();
 		});
-		await page.waitFor(3000);
+		await page.waitForTimeout(3000);
 
 		if (value == null) {
 			console.log("掛信残高取得失敗");

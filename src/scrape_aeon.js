@@ -7,7 +7,7 @@ module.exports.scrape = async (page, account) => {
 	try {
 		// ログインページへ移動
 		await page.goto("https://www.aeonbank.co.jp/login/ib_02.html", {"waitUntil":"domcontentloaded"});
-		await page.waitFor(1000);
+		await page.waitForTimeout(1000);
 
 		// ログイン
 		await page.type("#cntrId", account.user_id);
@@ -16,7 +16,7 @@ module.exports.scrape = async (page, account) => {
 			page.waitForNavigation({"waitUntil":"domcontentloaded"}),
 			page.click("#btn_lgon")
 		]);
-		await page.waitFor(1000);
+		await page.waitForTimeout(1000);
 
 		// 秘密の質問
 		await secretQuestion(page, account);
@@ -27,7 +27,7 @@ module.exports.scrape = async (page, account) => {
 				page.waitForNavigation({"waitUntil":"domcontentloaded"}),
 				page.click("#btnNext")
 			]);
-			await page.waitFor(1000);
+			await page.waitForTimeout(1000);
 		}
 
 		// 残高取得
@@ -43,14 +43,14 @@ module.exports.scrape = async (page, account) => {
 			page.waitForNavigation({"waitUntil":"domcontentloaded"}),
 			page.click("#KBA_CLOSE_BTN_SPAN > input[type=button]")
 		]);
-		await page.waitFor(1000);
+		await page.waitForTimeout(1000);
 
 		// 確認されるのでもう一度ログアウトを押す
 		await Promise.all([
 			page.waitForNavigation({"waitUntil":"domcontentloaded"}),
 			page.click("#KBC21BN001B001")
 		]);
-		await page.waitFor(1000);
+		await page.waitForTimeout(1000);
 
 		// 閉じるボタンを押すとダイアログが出るので、OKを押す処理を入れておく
 		page.once("dialog", async (dialog)=>{
@@ -63,7 +63,7 @@ module.exports.scrape = async (page, account) => {
 			page.waitForNavigation({"waitUntil":"domcontentloaded"}),
 			page.click("#btn_close")
 		]);
-		await page.waitFor(1000);
+		await page.waitForTimeout(1000);
 		
 		return [{"account" : account.name
 				, "owner" : account.owner
@@ -118,5 +118,5 @@ async function secretQuestion(page, account) {
 		page.waitForNavigation({"waitUntil":"domcontentloaded"}),
 		page.click("#butn01")
 	]);
-	await page.waitFor(1000);
+	await page.waitForTimeout(1000);
 }

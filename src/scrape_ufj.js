@@ -19,7 +19,7 @@ module.exports.scrape = async (page, account) => {
 
 		// 「ほかの口座残高をみる」をクリック
 		await page.click("section.see-others > div.open-text");
-		await page.waitFor(1000);
+		await page.waitForTimeout(1000);
 		
 		// 口座一覧のページへ移動
 		let kouzalinks = await page.$x("//div[@class='show-more']//a[contains(text(), '口座一覧')]");

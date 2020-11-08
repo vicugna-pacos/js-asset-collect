@@ -7,7 +7,7 @@ module.exports.scrape = async (page, account) => {
 	try {
 		// ログインページへ移動
 		await page.goto("https://www.mizuhobank.co.jp/direct/start.html", {"waitUntil":"domcontentloaded"});
-		await page.waitFor(2000);
+		await page.waitForTimeout(2000);
 
 		// お客様番号入力
 		await page.type("#txbCustNo", account.user_id);
@@ -15,7 +15,7 @@ module.exports.scrape = async (page, account) => {
 			page.click("input[type=submit][name=N00000-next]")
 			, page.waitForNavigation({"waitUntil":"domcontentloaded"})
 		]);
-		await page.waitFor(2000);
+		await page.waitForTimeout(2000);
 		
 		// TODO 場合によっては合言葉の入力が必要
 
@@ -29,7 +29,7 @@ module.exports.scrape = async (page, account) => {
 			page.click("#btn_login")
 			, page.waitForNavigation({"waitUntil":"domcontentloaded"})
 		]);
-		await page.waitFor(2000);
+		await page.waitForTimeout(2000);
 
 		// 残高取得
 		let value = await page.evaluate(() => {return document.querySelector("#txtCrntBal").textContent});
@@ -44,7 +44,7 @@ module.exports.scrape = async (page, account) => {
 			page.click("img[alt=ログアウト]")
 			, page.waitForNavigation({"waitUntil":"domcontentloaded"})
 		]);
-		await page.waitFor(2000);
+		await page.waitForTimeout(2000);
 
 		return [{"account" : account.name
 				, "owner" : account.owner
