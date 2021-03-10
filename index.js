@@ -25,6 +25,7 @@ const LAUNCH_OPTION = {
 	scrapers.set("掛信", "scrape_kakeshin");
 	scrapers.set("楽天証券", "scrape_rakuten");
 	scrapers.set("みずほ", "scrape_mizuho");
+	scrapers.set("SBI", "scrape_sbi");
 	
 	// キャッチされなかったPromiseのエラー詳細を出してくれる
 	//process.on("unhandledRejection", console.dir);
