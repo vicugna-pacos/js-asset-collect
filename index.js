@@ -22,7 +22,6 @@ const LAUNCH_OPTION = {
 	scrapers.set("UFJ", "scrape_ufj");
 	scrapers.set("イオン銀行", "scrape_aeon");
 	scrapers.set("大和証券", "scrape_daiwa");
-	scrapers.set("掛信", "scrape_kakeshin");
 	scrapers.set("楽天証券", "scrape_rakuten");
 	scrapers.set("みずほ", "scrape_mizuho");
 	scrapers.set("SBI", "scrape_sbi");
