@@ -70,6 +70,9 @@ Node.js
   * `owner` - 所有者。複数人の口座残高を集めるときに、だれの口座か管理する場合に使用する。
   * その他 - 金融機関により異なる。ログインに使用する情報を指定する。
 
+## Google SpreadSheet API 用の credentials.json をダウンロードする
+Google Developer Console で API用のプロジェクトを作成し、credentials.json をダウンロードする。credentials.json はルートフォルダへ置く。
+
 ## スプレッドシート
 残高データと分類変換表のシートを作成しておく。
 
