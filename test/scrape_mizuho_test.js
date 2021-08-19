@@ -5,7 +5,7 @@ const aeon = require("../src/scrape_mizuho.js");
 
 const LAUNCH_OPTION = {
 	 headless : false
-	,executablePath : "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
+	,executablePath : "C:/Program Files/Google/Chrome/Application/chrome.exe"
 };
 
 /**
