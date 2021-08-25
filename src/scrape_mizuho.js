@@ -17,7 +17,8 @@ module.exports.scrape = async (page, account) => {
 		]);
 		await page.waitForTimeout(2000);
 		
-		// TODO 場合によっては合言葉の入力が必要
+		// 場合によっては合言葉の入力が必要
+		await inputQnA(page);
 
 		// パスワード入力
 		const pwarea = await page.$("#PASSWD_LoginPwdInput");
@@ -60,3 +61,35 @@ module.exports.scrape = async (page, account) => {
 
 };
 
+/**
+ * 合言葉の入力
+ * @param {*} page 
+ */
+async function inputQnA(page) {
+	let queryArea = await page.$("#txtQuery");
+	let answerArea = await page.$("input[type=text][name=txbTestWord]");
+	let nextButton = await page.$("input[type=button][value=次へ]");
+
+	if (queryArea == null || answerArea == null || nextButton == null) {
+		return;
+	}
+
+	// 合言葉の入力
+	let query = await page.evaluate(elm => elm.textContent, queryArea);
+
+	for (const qna of account.qnas) {
+		if (query == qna.q) {
+			await answerArea.type(qna.a);
+			break;
+		}
+	}
+
+	await Promise.all([
+		nextButton.click()
+		, page.waitForNavigation({"waitUntil":"domcontentloaded"})
+	]);
+	await page.waitForTimeout(2000);
+
+	// 複数回入力を求められることがあるので、再帰する
+	await inputQnA(page);
+}
