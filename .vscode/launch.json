@@ -12,7 +12,6 @@
 				"<node_internals>/**"
 			],
 			"program": "${workspaceFolder}\\index.js"
-			, "console": "externalTerminal"
 		}
 	]
 }
