@@ -9,9 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "config": "^3.3.2",
+    "config": "^3.3.6",
     "date-utils": "^1.2.21",
     "googleapis": "^61.0.0",
-    "puppeteer-core": "^5.4.0"
+    "puppeteer-core": "^5.5.0"
   }
 }
