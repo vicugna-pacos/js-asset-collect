@@ -9,23 +9,30 @@ const navOption = {"waitUntil":"domcontentloaded"};
 module.exports.scrape = async (page, account) => {
 	process.on("unhandledRejection", console.dir);
 	try {
-		await page.goto("https://www.rakuten-sec.co.jp/", navOption);
-		await page.waitFor(1000);
+		await page.goto("https://www.rakuten-sec.co.jp/");
 
 		// ログイン
+		await Promise.all([
+			page.waitForSelector("#form-login-id", {"visible":true}),
+			page.waitForSelector("#form-login-pass", {"visible":true}),
+			page.waitForSelector(".s3-form-login__btn", {"visible":true})
+		]);
+		await page.waitForTimeout(2000);
+
 		await page.type("#form-login-id", account.user_id);
 		await page.type("#form-login-pass", account.password);
 		
 		await Promise.all([
-			page.waitForNavigation({"waitUntil":"domcontentloaded"}),
+			page.waitForNavigation(),
 			page.click(".s3-form-login__btn")
 		]);
 
-		await page.waitFor(1000);
-
 		// 保有資産一覧へ移動
+		await page.waitForSelector("#member-top-btn-stk-possess", {"visible":true});
+		await page.waitForTimeout(2000);
+
 		await Promise.all([
-			page.waitForNavigation({"waitUntil":"domcontentloaded"}),
+			page.waitForNavigation(),
 			page.click("#member-top-btn-stk-possess")	// 資産合計のところにある「保有資産一覧」のリンク
 		]);
 
@@ -33,10 +40,11 @@ module.exports.scrape = async (page, account) => {
 		let selector_possess = "#table_possess_data > span > table";
 		let selector_balance = "#table_balance_data > div > table > tbody > tr:nth-child(13) > td.T2.R1.fb";
 
-		await page.waitForSelector(selector_possess);
-		await page.waitForSelector(selector_balance);
-		// 預かり金のロード終わりが分からないので、3秒待つ。
-		await page.waitFor(3000);
+		await Promise.all([
+			page.waitForSelector(selector_possess, {"visible":true}),
+			page.waitForSelector(selector_balance, {"visible":true})
+		]);
+		await page.waitForTimeout(3000);
 
 		// 国内株式などを取得
 		let raw_items = await page.evaluate(rakuten_getvalue, selector_possess, selector_balance);
